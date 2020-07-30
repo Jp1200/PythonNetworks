@@ -1,10 +1,12 @@
 import numpy as np
-
-np.random.seed(0)
+import nnfs
+from nnfs.datasets import spiral_data
+nnfs.init()
 
 X = [[1, 2, 3, 2.5],
      [2.0, 5.0, -1.0, 2.0],
      [-1.5, 2.7, 3.3, -0.8]]
+X, y = spiral_data(100, 3)
 # generally want small values randomly assigned betwen -1 and 1
 # Why? input data is 1.2 or 5 or larger value data will exponentially increase weights and values
 # want to scale and normalize so the scale remains managable and the meaning is still conveyed
@@ -20,13 +22,21 @@ class Layer:
         self.output = np.dot(inputs, self.weights) + self.biases
 
 
-layer1 = Layer(4, 5)
-layer2 = Layer(5, 2)
+class Activation_ReLU:
+    def forward(self, inputs):
+        self.output = np.maximum(0, inputs)
 
+
+layer1 = Layer(2, 5)
+# layer2 = Layer(5, 2)
+activation1 = Activation_ReLU()
 layer1.forward(X)
+
+activation1.forward(layer1.output)
+print(activation1.output)
 # print(layer1.output)
-layer2.forward(layer1.output)
-print(layer2.output)
+# layer2.forward(layer1.output)
+# print(layer2.output)
 
 # Inputs could be layers
 #
